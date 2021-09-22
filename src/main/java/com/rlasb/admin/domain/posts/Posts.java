@@ -1,4 +1,6 @@
 package com.rlasb.admin.domain.posts;
+
+//import com.sun.tools.javac.jvm.Gen;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,8 +14,8 @@ import javax.persistence.Id;
 @Getter
 @NoArgsConstructor
 @Entity
-
 public class Posts {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,10 +29,9 @@ public class Posts {
     private String author;
 
     @Builder
-    public Posts(String title, String content, String author) {
+    public Posts(String title, String content, String author){
         this.title = title;
         this.content = content;
         this.author = author;
     }
 }
-
