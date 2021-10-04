@@ -4,6 +4,14 @@
     <div class="row">
         <div class="col-md-6">
             <a href="/posts/save" role = "button" class="btn btn-primary">글 등록</a>
+            {{#userId}}
+                    Logged in as : <span id = "user">{{userId}}</span>
+                    <a href="/logout" class = "btn btn-info active" role = "button">Logout</a>
+            {{/userId}}
+            {{^userId}}
+                <a href="/oauth2/authorization/google" class = "btn btn-success active" role = "button">Google Login</a>
+                <a href="/oauth2/authorization/naver" class="btn btn-secondary active" role="button">Naver Login</a>
+            {{/userId}}
         </div>
     </div>
     <br>
@@ -12,7 +20,6 @@
         <tr>
             <th>게시글 번호</th>
             <th>제목</th>
-            <th>작성자</th>
             <th>최종수정일</th>
         </tr>
         </thead>
@@ -21,7 +28,6 @@
             <tr>
                 <td>{{id}}</td>
                 <td><a href= "/posts/update/{{id}}">{{title}}</a></td>
-                <td>{{author}}</td>
                 <td>{{modifyDate}}</td>
             </tr>
             {{/posts}}
