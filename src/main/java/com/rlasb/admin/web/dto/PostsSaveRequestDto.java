@@ -1,6 +1,7 @@
 package com.rlasb.admin.web.dto;
 
 import com.rlasb.admin.domain.posts.Posts;
+import com.rlasb.admin.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,10 +11,11 @@ import lombok.NoArgsConstructor;
 public class PostsSaveRequestDto {
     private String title;
     private String content;
-    private String author;
+    //private String author;
+    private User author;
 
     @Builder
-    public PostsSaveRequestDto(String title, String content, String author) {
+    public PostsSaveRequestDto(String title, String content, User author) {
         this.title = title;
         this.content = content;
         this.author = author;

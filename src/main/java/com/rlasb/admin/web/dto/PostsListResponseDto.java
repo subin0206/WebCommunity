@@ -1,6 +1,7 @@
 package com.rlasb.admin.web.dto;
 
 import com.rlasb.admin.domain.posts.Posts;
+import com.rlasb.admin.domain.user.User;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -8,7 +9,7 @@ import java.time.LocalDateTime;
 public class PostsListResponseDto {
     private Long id;
     private String title;
-    private String author;
+    private User author;
     private LocalDateTime modifyDate;
 
     public PostsListResponseDto(Posts entity) {

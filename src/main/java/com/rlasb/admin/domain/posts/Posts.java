@@ -1,5 +1,6 @@
 package com.rlasb.admin.domain.posts;
 import com.rlasb.admin.domain.BaseTimeEntity;
+import com.rlasb.admin.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,12 +19,12 @@ public class Posts extends BaseTimeEntity {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
-    private String author;
-
-
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "post_author")
+    private User author;
 
     @Builder
-    public Posts(String title, String content, String author) {
+    public Posts(String title, String content, User author) {
         this.title = title;
         this.content = content;
         this.author = author;
@@ -35,3 +36,5 @@ public class Posts extends BaseTimeEntity {
     }
 
 }
+
+
