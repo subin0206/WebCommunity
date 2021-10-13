@@ -17,25 +17,27 @@ import javax.servlet.http.HttpSession;
 public class IndexController {
     private final PostsService postsService;
     private final HttpSession httpSession;
+
+
     @GetMapping("/")
     public String index(Model model, @LoginUser SessionUser user){
         model.addAttribute("posts", postsService.findAllDesc());
         if (user != null) {
-            model.addAttribute("userId", user.getName());
+            model.addAttribute("userName", user.getName());
+            model.addAttribute("userEmail", user.getEmail());
         }
         return "index";
     }
     @GetMapping("/posts/save")
     public String postsSave(Model model,@LoginUser SessionUser user){
         if (user != null) {
-            model.addAttribute("userId", user.getName());
+            model.addAttribute("userName", user.getName());
         }
         return "posts-save";
     }
 
     @GetMapping("/posts/update/{id}")
     public String postUpdate(@PathVariable Long id, Model model){
-
         PostsResponseDto dto = postsService.findById(id);
         model.addAttribute("posts", dto);
 

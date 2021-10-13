@@ -1,3 +1,4 @@
+/*
 package com.rlasb.admin.web.domain.posts;
 
 import com.rlasb.admin.domain.posts.PostRepository;
@@ -42,3 +43,4 @@ public class PostsRepositoryTest {
 
     }
 }
+*/

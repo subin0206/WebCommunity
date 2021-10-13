@@ -1,7 +1,11 @@
 package com.rlasb.admin.service;
 
+import com.rlasb.admin.config.auth.LoginUser;
+import com.rlasb.admin.config.auth.dto.SessionUser;
 import com.rlasb.admin.domain.posts.PostRepository;
 import com.rlasb.admin.domain.posts.Posts;
+import com.rlasb.admin.domain.user.User;
+import com.rlasb.admin.domain.user.UserRepository;
 import com.rlasb.admin.web.dto.PostsListResponseDto;
 import com.rlasb.admin.web.dto.PostsResponseDto;
 import com.rlasb.admin.web.dto.PostsSaveRequestDto;
@@ -17,9 +21,12 @@ import java.util.stream.Collectors;
 @Service
 public class PostsService {
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
 
     @Transactional
-    public Long save(PostsSaveRequestDto requestDto, String name) {
+    public Long save(PostsSaveRequestDto requestDto, String email) {
+        User users = userRepository.findByEmail(email);
+        requestDto.setUser(users);
         return postRepository.save(requestDto.toEntity()).getId();
     }
 
@@ -49,4 +56,6 @@ public class PostsService {
                 .map(PostsListResponseDto::new)
                 .collect(Collectors.toList());
     }
+
+
 }

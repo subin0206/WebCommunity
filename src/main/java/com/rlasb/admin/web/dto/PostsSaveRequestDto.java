@@ -29,4 +29,8 @@ public class PostsSaveRequestDto {
                 .build();
     }
 
+    public void setUser(User user){
+        this.author = user;
+    }
+
 }

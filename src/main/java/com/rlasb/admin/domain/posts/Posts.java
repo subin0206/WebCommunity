@@ -20,7 +20,7 @@ public class Posts extends BaseTimeEntity {
     private String content;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "post_author")
+    @JoinColumn(name = "userId")
     private User author;
 
     @Builder
