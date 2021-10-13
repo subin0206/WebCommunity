@@ -1,12 +1,15 @@
 package com.rlasb.admin.web;
 
+import com.rlasb.admin.config.auth.LoginUser;
+import com.rlasb.admin.config.auth.dto.SessionUser;
 import com.rlasb.admin.service.PostsService;
 import com.rlasb.admin.web.dto.PostsResponseDto;
 import com.rlasb.admin.web.dto.PostsSaveRequestDto;
 import com.rlasb.admin.web.dto.PostsUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpSession;
 
 @RequiredArgsConstructor
 @RestController
@@ -14,11 +17,11 @@ import org.springframework.web.bind.annotation.*;
 public class PostsApiController {
 
     private final PostsService postsService;
-
+    private final HttpSession httpSession;
     @PostMapping("/api/v1/posts")
-    public Long save(Model model , @RequestBody PostsSaveRequestDto requestDto){
-
-        return postsService.save(requestDto);
+    public Long save(@RequestBody PostsSaveRequestDto requestDto, @LoginUser SessionUser sessionUser){
+        sessionUser = (SessionUser) httpSession.getAttribute("user");
+        return postsService.save(requestDto, sessionUser.getEmail());
     }
     @PutMapping("/api/v1/posts/{id}")
     public Long update(@PathVariable Long id, @RequestBody PostsUpdateRequestDto requestDto) {

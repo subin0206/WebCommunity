@@ -2,6 +2,7 @@ package com.rlasb.admin.web;
 
 import com.rlasb.admin.config.auth.LoginUser;
 import com.rlasb.admin.config.auth.dto.SessionUser;
+import com.rlasb.admin.domain.user.UserRepository;
 import com.rlasb.admin.service.PostsService;
 import com.rlasb.admin.web.dto.PostsResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -17,11 +18,15 @@ import javax.servlet.http.HttpSession;
 public class IndexController {
     private final PostsService postsService;
     private final HttpSession httpSession;
+    UserRepository userRepository;
     @GetMapping("/")
     public String index(Model model, @LoginUser SessionUser user){
         model.addAttribute("posts", postsService.findAllDesc());
+//        for(int i =0; i < postsService.findAllDesc().size(); i++){
+//            model.addAttribute("usersPost", postsService.getEmail().);
+//        }
         if (user != null) {
-            model.addAttribute("userId", user.getName());
+            model.addAttribute("userId", user.getEmail());
         }
         return "index";
     }

@@ -26,9 +26,10 @@ public class User extends BaseTimeEntity {
     private String picture;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Role role;
 
+//    private SessionUser sessionUser;
     @Builder
     public User(Long id, String name, String email, String picture, Role role) {
         this.id = id;
@@ -48,4 +49,6 @@ public class User extends BaseTimeEntity {
     public String getRoleKey(){
         return this.role.getKey();
     }
+
+
 }

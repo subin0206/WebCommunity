@@ -22,7 +22,6 @@ import java.util.Collections;
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
     private final UserRepository userRepository;
     private final HttpSession httpSession;
-
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2UserService delegate = new DefaultOAuth2UserService();
@@ -37,7 +36,9 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         User user = saveOrUpdate(attributes);
         httpSession.setAttribute("user", new SessionUser(user));
-
+//        httpSession.setAttribute("sessionUser",userRepository.findByEmail(user.getEmail()));
+//        System.out.println(httpSession.getAttribute("user")+"userService session user");
+//        System.out.println(httpSession.getAttribute("sessionUser")+"userService session sessionUser");
         return new DefaultOAuth2User(
                 Collections.singleton(new SimpleGrantedAuthority(user.getRoleKey())),
                 attributes.getAttributes(),
@@ -45,10 +46,12 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     }
 
     private User saveOrUpdate(OAuthAttributes attributes) {
-        User user = userRepository.findByEmail(attributes.getEmail())
-                .map(entity -> entity.update(attributes.getName(),attributes.getPicture()))
-                .orElse(attributes.toEntity());
-
+        User user = userRepository.findByEmail(attributes.getEmail());
+//                .map(entity -> entity.update(attributes.getName(),attributes.getPicture()))
+//                .orElse(attributes.toEntity());
         return userRepository.save(user);
     }
+
+
+
 }
