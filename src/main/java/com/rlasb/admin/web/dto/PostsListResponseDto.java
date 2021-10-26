@@ -19,5 +19,6 @@ public class PostsListResponseDto {
 //        this.author = entity.getAuthor();
         this.user = entity.getUser();
         this.modifyDate = entity.getModifyDate();
+
     }
 }

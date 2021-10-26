@@ -1,5 +1,8 @@
 package com.rlasb.admin.service;
 
+import com.rlasb.admin.domain.files.Attachments;
+import com.rlasb.admin.domain.files.AttachmentsRepository;
+import com.rlasb.admin.util.FileUtilities;
 import com.rlasb.admin.domain.posts.PostRepository;
 import com.rlasb.admin.domain.posts.Posts;
 import com.rlasb.admin.domain.user.UserRepository;
@@ -7,9 +10,11 @@ import com.rlasb.admin.web.dto.PostsListResponseDto;
 import com.rlasb.admin.web.dto.PostsResponseDto;
 import com.rlasb.admin.web.dto.PostsSaveRequestDto;
 import com.rlasb.admin.web.dto.PostsUpdateRequestDto;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,13 +22,26 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
+@Getter
 public class PostsService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final AttachmentsRepository attachmentsRepository;
     @Transactional
-    public Long save(PostsSaveRequestDto requestDto, String userEmail) {
+    public Long save(PostsSaveRequestDto requestDto, List<MultipartFile> files,String userEmail) throws Exception{
+
+        System.out.println(userEmail+"userEmail");
         requestDto.setUser(userRepository.findByEmail(userEmail));
-        return postRepository.save(requestDto.toEntity()).getId();
+        Posts savePosts = postRepository.save(requestDto.toEntity());
+
+        List<Attachments> attachmentsList = FileUtilities.parseFileInfo(files, savePosts);
+        if (!attachmentsList.isEmpty()) {
+            attachmentsList.forEach(attachments -> attachmentsRepository.save(attachments));
+        }
+//        if (!deleteFileList.isEmpty()) {
+//            attachmentsRepository.deleteByAttachIdList(deleteFileList);
+//        }
+        return savePosts.getId();
     }
 
     @Transactional
@@ -57,6 +75,7 @@ public class PostsService {
                 .map(PostsListResponseDto::new)
                 .collect(Collectors.toList());
     }
+
     @Transactional
     public String getEmail() {
         List<String> emails = new ArrayList<>();

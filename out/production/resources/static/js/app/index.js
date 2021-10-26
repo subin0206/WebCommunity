@@ -18,13 +18,16 @@ var main = {
             title: $('#title').val(),
             content: $('#content').val()
         };
-
+        var form =$('#form')[0];
+		var formData = new FormData(form);
+		formData.append('file', $('#file'));
+		formData.append('key', new Blob([JSON.stringify(data)] , {type: "application/json"}));
         $.ajax({
             type: 'POST',
             url: '/api/v1/posts',
-            dataType: 'json',
-            contentType:'application/json; charset=utf-8',
-            data: JSON.stringify(data)
+            processData: false,
+            contentType:false,
+            data: formData
         }).done(function() {
             alert('글이 등록되었습니다.');
             window.location.href = '/';

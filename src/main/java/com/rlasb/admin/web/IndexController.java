@@ -3,6 +3,7 @@ package com.rlasb.admin.web;
 import com.rlasb.admin.config.auth.LoginUser;
 import com.rlasb.admin.config.auth.dto.SessionUser;
 import com.rlasb.admin.domain.user.UserRepository;
+import com.rlasb.admin.service.FileService;
 import com.rlasb.admin.service.PostsService;
 import com.rlasb.admin.web.dto.PostsResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpSession;
 public class IndexController {
     private final PostsService postsService;
     private final HttpSession httpSession;
+    private final FileService fileService;
     UserRepository userRepository;
     @GetMapping("/")
     public String index(Model model, @LoginUser SessionUser user){
@@ -40,10 +42,21 @@ public class IndexController {
 
     @GetMapping("/posts/update/{id}")
     public String postUpdate(@PathVariable Long id, Model model){
-
+//        List<FileResponseDto> fileResponseDtos = fileService.findAllByPosts(id);
+//        List<Long> fileId = new ArrayList<>();
+//        for (FileResponseDto fileResponseDto : fileResponseDtos) {
+//            fileId.add(fileResponseDto.getFileId());
+//        }
         PostsResponseDto dto = postsService.findById(id);
         model.addAttribute("posts", dto);
-
+        model.addAttribute("fileList", postsService.getAttachmentsRepository().findAllByPostsId(id));
         return "posts-update";
+    }
+
+    @GetMapping("/posts/detail/{id}")
+    public String postsDetail(@PathVariable Long id, Model model){
+        model.addAttribute("posts",postsService.findById(id));
+        model.addAttribute("fileList", postsService.getAttachmentsRepository().findAllByPostsId(id));
+        return "posts-detail";
     }
 }
