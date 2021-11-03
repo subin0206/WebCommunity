@@ -38,4 +38,7 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-oauth2-client')
     testCompile("org.springframework.security:spring-security-test")
     compile('org.springframework.session:spring-session-jdbc')
+    implementation('commons-io:commons-io:2.8.0')
+    implementation('commons-fileupload:commons-fileupload:1.4')
+    compile group: 'com.google.code.gson', name: 'gson', version: '2.8.6'
 }

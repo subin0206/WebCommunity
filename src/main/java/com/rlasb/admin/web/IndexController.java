@@ -40,7 +40,15 @@ public class IndexController {
     public String postUpdate(@PathVariable Long id, Model model){
         PostsResponseDto dto = postsService.findById(id);
         model.addAttribute("posts", dto);
+        model.addAttribute("fileList", postsService.getGallerysRepository().findAllByPostsId(id));
 
         return "posts-update";
+    }
+
+    @GetMapping("/posts/detail/{id}")
+    public String postDetail(@PathVariable Long id, Model model){
+        model.addAttribute("posts", postsService.findById(id));
+        model.addAttribute("fileList", postsService.getGallerysRepository().findAllByPostsId(id));
+        return "posts-detail";
     }
 }
