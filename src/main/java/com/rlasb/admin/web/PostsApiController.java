@@ -29,7 +29,6 @@ public class PostsApiController {
     public Long save(@RequestPart(value = "key") PostsSaveRequestDto requestDto,
                      @LoginUser SessionUser user, @RequestPart(value = "file", required = false) List<MultipartFile> files) throws Exception {
         user = (SessionUser) httpSession.getAttribute("user");
-        System.out.println(files+"ffffffffff");
         return postsService.save(requestDto, user.getEmail(), files);
     }
 
@@ -48,5 +47,7 @@ public class PostsApiController {
         postsService.delete(id);
         return id;
     }
+
+
 
 }
