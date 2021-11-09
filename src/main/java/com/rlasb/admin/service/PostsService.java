@@ -2,10 +2,10 @@ package com.rlasb.admin.service;
 
 import com.rlasb.admin.domain.files.Attachments;
 import com.rlasb.admin.domain.files.AttachmentsRepository;
-import com.rlasb.admin.util.FileUtilities;
 import com.rlasb.admin.domain.posts.PostRepository;
 import com.rlasb.admin.domain.posts.Posts;
 import com.rlasb.admin.domain.user.UserRepository;
+import com.rlasb.admin.util.FileUtilities;
 import com.rlasb.admin.web.dto.PostsListResponseDto;
 import com.rlasb.admin.web.dto.PostsResponseDto;
 import com.rlasb.admin.web.dto.PostsSaveRequestDto;
@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,10 +47,20 @@ public class PostsService {
     }
 
     @Transactional
-    public Long update(Long id, PostsUpdateRequestDto requestDto) {
+    public Long update(Long id, List<MultipartFile> files, PostsUpdateRequestDto requestDto) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         Posts posts = postRepository.findById(id)
                 .orElseThrow(()->new IllegalArgumentException("해당 사용자가 없습니다. id ="+id));
+
+        if (!requestDto.getDeleteList().isEmpty()) {
+            attachmentsRepository.deleteByAttachIdList(requestDto.getDeleteList());
+        }
         posts.update(requestDto.getTitle(), requestDto.getContent());
+
+        List<Attachments> attachmentsList = FileUtilities.parseFileInfo(files, posts);
+
+        if (!attachmentsList.isEmpty()) {
+            attachmentsList.forEach(attachments -> attachmentsRepository.save(attachments));
+        }
         return id;
     }
 

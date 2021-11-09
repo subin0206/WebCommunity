@@ -30,17 +30,29 @@ public class Posts extends BaseTimeEntity {
     private User user;
     @OneToMany(mappedBy = "posts", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private List<Attachments> attachmentsList = new ArrayList<>();
+    @Column(columnDefinition = "boolean default false")
+    private boolean approve;
     @Builder
-    public Posts(String title, String content, User user) {
+    public Posts(String title, String content, User user, boolean approve) {
         this.title = title;
         this.content = content;
 //        this.author = author;
         this.user = user;
+        this.approve = approve;
     }
-
+    public Posts(String title, String content) {
+        this.title = title;
+        this.content = content;
+//        this.author = author;
+    }
     public void update(String title, String content) {
         this.title = title;
         this.content = content;
+    }
+    public void approvePosts(boolean approve){
+        if (approve == false) {
+            approve = true;
+        }
     }
 
 }

@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -38,12 +39,10 @@ public class PostsApiController {
 //    }
     @PutMapping("/api/v1/posts/{id}")
     public Long update(@PathVariable Long id, @RequestPart(value = "key") PostsUpdateRequestDto requestDto, @RequestPart(value = "file",required = false) List<MultipartFile>files
-                       , @RequestPart(value = "deleteFile") ArrayList<Long> jsonData
-                       ) {
-        System.out.println(jsonData+"deeeeeee");
+                       ) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+        System.out.println(requestDto.getDeleteList()+"dddd");
         System.out.println(requestDto.getContent()+"cccccccc");
-//        List<Attachments> dbAttachList = fileService.findAllByPosts(id);
-        return postsService.update(id,requestDto);
+        return postsService.update(id,files,requestDto);
     }
 
     @GetMapping("/api/v1/posts/{id}")

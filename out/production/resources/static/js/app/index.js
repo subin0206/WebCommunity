@@ -37,18 +37,11 @@ var main = {
         var data = {
             title: $('#title').val(),
             content: $('#content').val(),
-
         };
-//        var data2 = {
-//            "deleteFile" : deleteFileList
-//        };
-//        var jsonDeleteFile = JSON.stringify(deleteFileList);
         var form =$('#form')[0];
 		var formData = new FormData(form);
 		formData.append('file', $('#file'));
 		formData.append('key', new Blob([JSON.stringify(data)] , {type: "application/json"}));
-		formData.append('deleteFile', new Blob([JSON.stringify(deleteFileList)] , {type: "application/json"}));
-//		formData.append('deleteFile', data2);
         $.ajax({
             type: 'POST',
             url: '/api/v1/posts',
@@ -66,13 +59,18 @@ var main = {
     update : function () {
         var data = {
             title: $('#title').val(),
-            content: $('#content').val()
+            content: $('#content').val(),
+            deleteList : deleteFileList
         };
+//        var data2 = {
+//            "deleteFile" : deleteFileList
+//        };
         var form =$('#form')[0];
 		var formData = new FormData(form);
 		formData.append('file', $('#file'));
 //		formData.append('deleteFileList',deleteFileList);
-//        formData.append('deleteFileList', new Blob([JSON.parse(JSON.stringify(data))]), {type: "application/json"});
+        formData.append('deleteFile', new Blob([JSON.stringify(deleteFileList)]), {type: "application/json"});
+        formData.append('size', new Blob([JSON.stringify(deleteFileList.length)]),{type:"application/json"});
 		formData.append('key', new Blob([JSON.stringify(data)] , {type: "application/json"}));
 
         var id = $('#id').val();
@@ -82,6 +80,7 @@ var main = {
             url: '/api/v1/posts/'+id,
             processData:false,
             contentType:false,
+            traditional : true,
             data: formData
         }).done(function() {
             alert('글이 수정되었습니다.');

@@ -10,6 +10,6 @@ import java.util.List;
 public interface AttachmentsRepository extends JpaRepository<Attachments, Long> {
     public List<Attachments> findAllByPostsId(Long postsId);
     @Modifying
-    @Query(value = "DELETE FROM Attachments a"+"WHERE a.id IN (:deleteFileList)", nativeQuery = true)
-    public void deleteByAttachIdList(@Param(("deleteFileList")) List<Long> deleteFileList);
+    @Query(value = "DELETE FROM Attachments a WHERE a.attachments_id IN (:deleteFileList)", nativeQuery = true)
+    public void deleteByAttachIdList(@Param("deleteFileList") List<Long> deleteFileList);
 }
