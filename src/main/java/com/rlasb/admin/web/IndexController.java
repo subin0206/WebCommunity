@@ -42,11 +42,7 @@ public class IndexController {
 
     @GetMapping("/posts/update/{id}")
     public String postUpdate(@PathVariable Long id, Model model){
-//        List<FileResponseDto> fileResponseDtos = fileService.findAllByPosts(id);
-//        List<Long> fileId = new ArrayList<>();
-//        for (FileResponseDto fileResponseDto : fileResponseDtos) {
-//            fileId.add(fileResponseDto.getFileId());
-//        }
+
         PostsResponseDto dto = postsService.findById(id);
         model.addAttribute("posts", dto);
         model.addAttribute("fileList", postsService.getAttachmentsRepository().findAllByPostsId(id));

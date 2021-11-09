@@ -4,7 +4,7 @@
 
 <div class="col-md-12">
     <div class="col-md-4">
-        <form>
+        <form id="form" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="title">글번호</label>
                 <input type="text" class="form-control" id="id" value = "{{posts.id}}" readonly>
@@ -21,15 +21,26 @@
                 <label for="content"> 내용 </label>
                 <textarea class="form-control" id="content">{{posts.content}}</textarea>
             </div>
-            <div class = "form-group">
-                <label for="file">파일</label>
-                {{#fileList}}<img src = "/image/{{id}}" style="max-width:100%"; height="auto";/>
+            <div class = "form-group" id="inputFile">
+                <input type="file" name="file" id="file" multiple="multiple"/>
+            </div>
+
+            <div class = "form-group" id="fileList">
+                <table class = "table table-horizontal table-bordered">
+                <tbody id="tbody">
+                {{#fileList}}
+                <tr>
+                    <td>{{origFileName}}</td>
+                    <td><button type="button" id="delete" onclick="deleteFile(this)"  value="{{id}}" class="btn btn-danger btn-xs">X</button></td>
+                </tr>
                 {{/fileList}}
+                </tbody>
+                </table>
             </div>
         </form>
         <a href="/" role="button" class="btn btn-secondary">취소</a>
         <button type="button" class="btn btn-primary" id="btn-update">수정 완료</button>
-        <button type="button" class="btn btn-danger" id="btn-delete">삭제</button>
+        <button type="button" class="btn btn-primary" id="btn-temp">temp</button>
     </div>
 </div>
 

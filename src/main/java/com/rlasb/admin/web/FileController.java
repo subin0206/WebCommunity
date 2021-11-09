@@ -37,7 +37,6 @@ public class FileController {
         InputStream imageStream = new FileInputStream(path);
         byte[] imageByteArray = IOUtils.toByteArray(imageStream);
         imageStream.close();
-        System.out.println(path + "immmmmmmmmmmmmmmmmmmmm");
         return new ResponseEntity<>(imageByteArray, HttpStatus.OK);
     }
 }

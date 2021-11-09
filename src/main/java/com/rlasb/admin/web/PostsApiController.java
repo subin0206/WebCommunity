@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -36,7 +37,11 @@ public class PostsApiController {
 //        return postsService.save(requestDto, sessionUser.getEmail());
 //    }
     @PutMapping("/api/v1/posts/{id}")
-    public Long update(@PathVariable Long id, @RequestBody PostsUpdateRequestDto requestDto) {
+    public Long update(@PathVariable Long id, @RequestPart(value = "key") PostsUpdateRequestDto requestDto, @RequestPart(value = "file",required = false) List<MultipartFile>files
+                       , @RequestPart(value = "deleteFile") ArrayList<Long> jsonData
+                       ) {
+        System.out.println(jsonData+"deeeeeee");
+        System.out.println(requestDto.getContent()+"cccccccc");
 //        List<Attachments> dbAttachList = fileService.findAllByPosts(id);
         return postsService.update(id,requestDto);
     }
